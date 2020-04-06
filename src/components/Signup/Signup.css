@@ -1,0 +1,19 @@
+.InputDivision{
+    margin:15px;
+}
+
+.Input{
+    height:20px;
+    width: 250px;
+    padding: 10px;
+    border-radius: 2px;
+}
+
+.Button{
+    width:100px;
+    height:30px;
+    background-color:rgb(18, 164, 231);
+    color: aliceblue;
+    font-size: 17px;
+}
+   
