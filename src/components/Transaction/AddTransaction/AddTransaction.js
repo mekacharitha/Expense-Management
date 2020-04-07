@@ -32,7 +32,7 @@ class AddTransaction extends React.Component {
             date: this.state.date,
             accountName: this.state.accountName
         }
-        if (window.location.pathname == '/addtransaction') {
+        if (window.location.pathname == '/addTransaction') {
             let onAddTransaction = addTransaction(transaction)
             if (onAddTransaction)
                 await this.setState({ addedTransaction: true })

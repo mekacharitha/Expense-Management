@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import {localStorageSetItem , localStorageGetItem} from './utils';
+import { localStorageSetItem, localStorageGetItem } from './utils';
 
 export const addTransaction = (transaction) => {
     console.log(transaction);
@@ -11,8 +11,8 @@ export const addTransaction = (transaction) => {
     })
     let transacId = localStorageGetItem('transactionId')
     transacId++
-   console.log(accounts[0]);
-   console.log(accountIndex);
+    console.log(accounts[0]);
+    console.log(accountIndex);
     let obj = {
         transactionId: transacId,
         accountId: accounts[accountIndex].accountId,
@@ -23,19 +23,19 @@ export const addTransaction = (transaction) => {
         userId: payload.userId
     }
     transactions.push(obj)
-   // console.log(transactions)
+    // console.log(transactions)
     localStorageSetItem("transactions", transactions)
     localStorageSetItem('transactionId', transacId)
     let transactionIndex = transactions.findIndex(item => {
         return item.transactionId === transacId
     })
     if (transactions[transactionIndex].transactionType == "expense") {
-      //console.log(accounts[accountIndex])
-        accounts[accountIndex].accountBalance =Number( accounts[accountIndex].accountBalance) - Number(transactions[transactionIndex].amount)
+        //console.log(accounts[accountIndex])
+        accounts[accountIndex].accountBalance = Number(accounts[accountIndex].accountBalance) - Number(transactions[transactionIndex].amount)
         localStorageSetItem("accounts", accounts)
     }
     else {
-        accounts[accountIndex].accountBalance = Number(accounts[accountIndex].accountBalance )+ Number(transactions[transactionIndex].amount)
+        accounts[accountIndex].accountBalance = Number(accounts[accountIndex].accountBalance) + Number(transactions[transactionIndex].amount)
         localStorageSetItem("accounts", accounts)
     }
     localStorageSetItem("transactions", transactions)
@@ -48,14 +48,40 @@ export const getTransactions = () => {
     let payload = jwt.decode(localStorageGetItem("token"));
     let transactions = localStorageGetItem("transactions");
     let userTransactions = transactions.map(obj => {
-        if(obj.userId === payload.userId){
+        if (obj.userId === payload.userId) {
             return obj
         }
     })
     return userTransactions;
 }
 
+export const getTransactionsByAccountName = () => {
+    let transactions = localStorageGetItem("transactions");
+    let payload = jwt.decode(localStorageGetItem("token"));
+    let accounts = localStorageGetItem("accounts");
+    let accountIndex = accounts.findIndex(item => {
+        return (item.accountName === window.location.pathname.substr(14) && item.userId == payload.userId)
+    })
+    let transactionByAccountName = transactions.map( obj => {
+        if (obj.accountId == accounts[accountIndex].accountId){
+            return obj;
+        }
+    })
+    console.log(transactionByAccountName);
+    return transactionByAccountName;
+}
 
+export const getAccountBalance = (accountName) => {
+    let payload = jwt.decode(localStorageGetItem("token"));
+    let accounts = localStorageGetItem("accounts");
+    let accBalance = accounts.map(obj => {
+        if(obj.accountName == accountName && obj.userId ===payload.userId)
+            return obj.accountBalance;
+    })
+   // console.log(accBalance);
+    return accBalance;
+    
+}
 
 export const deleteTransaction = (transactionId) => {
     let transactions = localStorageGetItem('transactions');
@@ -73,7 +99,7 @@ export const deleteTransaction = (transactionId) => {
         localStorageSetItem("transactions", transactions);
     }
     else {
-        accounts[accountIndex].accountBalance = Number(accounts[accountIndex].accountBalance) -Number(transactions[transactionIndex].amount)
+        accounts[accountIndex].accountBalance = Number(accounts[accountIndex].accountBalance) - Number(transactions[transactionIndex].amount)
         localStorageSetItem("accounts", accounts)
         transactions.splice(transactionIndex, 1)
         localStorageSetItem("transactions", transactions);
@@ -85,27 +111,27 @@ export const editTransaction = (transaction) => {
     let transactionId = Number(window.location.pathname.substr(17))
     let transactions = JSON.parse(localStorage.getItem('transactions'));
     let transactionIndex = transactions.findIndex(item => {
-    return item.transactionId === transactionId
+        return item.transactionId === transactionId
     })
     transaction = { ...transaction, transactionId: Number(window.location.pathname.substr(17)), accountId: transactions[transactionIndex].accountId, userId: payload.userId }
     let accounts = JSON.parse(localStorage.getItem('accounts'))
     let accountIndex = accounts.findIndex(item => {
-    return item.accountId === transactions[transactionIndex].accountId
+        return item.accountId === transactions[transactionIndex].accountId
     })
     if (transactions[transactionIndex].transactionType == "expense") {
-    accounts[accountIndex].accountBalance = Number(accounts[accountIndex].accountBalance) + Number(transactions[transactionIndex].amount)
-    localStorage.setItem("accounts", JSON.stringify(accounts))
+        accounts[accountIndex].accountBalance = Number(accounts[accountIndex].accountBalance) + Number(transactions[transactionIndex].amount)
+        localStorage.setItem("accounts", JSON.stringify(accounts))
     }
     else {
-    accounts[accountIndex].accountBalance = Number(accounts[accountIndex].accountBalance) - Number(transactions[transactionIndex].amount)
-    localStorage.setItem("accounts", JSON.stringify(accounts))
+        accounts[accountIndex].accountBalance = Number(accounts[accountIndex].accountBalance) - Number(transactions[transactionIndex].amount)
+        localStorage.setItem("accounts", JSON.stringify(accounts))
     }
     if (transaction.transactionType === "expense")
-    accounts[accountIndex].accountBalance = Number(accounts[accountIndex].accountBalance) - Number(transaction.amount)
+        accounts[accountIndex].accountBalance = Number(accounts[accountIndex].accountBalance) - Number(transaction.amount)
     else
-    accounts[accountIndex].accountBalance = Number(accounts[accountIndex].accountBalance) + Number(transaction.amount)
+        accounts[accountIndex].accountBalance = Number(accounts[accountIndex].accountBalance) + Number(transaction.amount)
     localStorage.setItem("accounts", JSON.stringify(accounts))
     transactions.splice(transactionIndex, 1)
     transactions.splice(transactionIndex, 0, transaction)
     localStorage.setItem("transactions", JSON.stringify(transactions))
-    }
+}

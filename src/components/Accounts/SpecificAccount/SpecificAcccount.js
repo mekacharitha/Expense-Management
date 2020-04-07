@@ -1,0 +1,51 @@
+import React from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import { FiEdit } from "react-icons/fi";
+import { MdDelete } from "react-icons/md";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import './SpecificAccount.css';
+import { getTransactionsByAccountName, deleteTransaction ,getAccountBalance } from '../../../services/transactions';
+
+class Transaction extends React.Component {
+
+    handleDelete = async (transactionId) => {
+        //console.log(transactionId)
+        await deleteTransaction(transactionId)
+        this.setState({})
+    }
+
+    render() {
+        let transactions = getTransactionsByAccountName();
+        let accName = window.location.pathname.substr(14);
+        let accBalance = getAccountBalance(accName);
+        console.log(transactions.length);
+        return (
+            <div style={{ marginLeft: "50px" }} >
+                <div style={{ textAlign:"left"}}>
+                   <Link to="/accounts"><IoMdArrowRoundBack style={{fontSize:"50px" , color:"black"}} /></Link> 
+                </div>
+                <div className="AccountCard">
+                        {accName}
+                        <b style={{ fontSize: "larger" }}> ₹ {accBalance} </b>    
+                </div>
+                {transactions[0]!== undefined ? transactions.map(item => {
+                    return <div style={{ height: "50px", width: "75%", justifyContent: "space-around", display: "flex", border: "1px solid", margin: "10px", paddingTop: "20px" }}>
+                        <div> {item.transactionType} </div>
+                        <div> {item.description} </div>
+                        <div> {item.date} </div>
+                        <div> {item.amount} </div>
+                        <div> {item.accountId} </div>
+                        <MdDelete onClick={() => this.handleDelete(item.transactionId)} />
+                        <Link to={`/editTransaction/${item.transactionId}`}><FiEdit style={{ color: "black" }} /></Link>
+                    </div>
+                })
+                :
+                <div><h2>NO RECENT TRANSACTIONS</h2></div>
+            }
+
+            </div>
+
+        )
+    }
+}
+export default Transaction;
