@@ -1,0 +1,15 @@
+.AddAccButton{
+    height:50px;
+    width:200px;
+    border-radius: 5px;
+    background-color: darkcyan;
+    color : azure;
+    font-size: larger;
+}
+
+.InputField{
+    height:50px;
+    width: 300px;
+    border-radius: 5px;
+   
+}

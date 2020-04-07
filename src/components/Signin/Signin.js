@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { verifyUser } from '../../services/users';
 //import {localStorageSetItem , localStorageGetItem} from '../../services/utils';
-import { Link } from 'react-router-dom';
+import { Link , Redirect  } from 'react-router-dom';
 import './Signin.css';
 
 
 class Signin extends Component {
+
+    state={
+        onSignin : false,
+    }
 
     onUserNameChange = (event) => {
         this.props.userNameChange(event.target.value)
@@ -16,20 +20,29 @@ class Signin extends Component {
         this.props.passwordChange(event.target.value)
     }
 
-    onSignin = () => {
+    onSignin = async() => {
         let user = {
             userName: this.props.userName,
             password: this.props.password,
         }
 
-        let message = verifyUser(user);
-        alert(message);
+        await this.setState({
+            onSignin: verifyUser(user)
+        }) 
+        if(this.state.onSignin){
+            alert("Signin successful");
+        }
+        else{
+            alert("Signin failed")
+        }
+       
     }
 
     render() {
         return (
             <div>
-                <div style={{ marginTop: "20%" }}>
+                <div style={{ marginTop: "18%" }}>
+                    <h2>EXPENSE TRACKER</h2>
                     <div className="InputDivision">
                         <input type="text" placeholder="USERNAME" className="Input" onChange={this.onUserNameChange} />
                     </div>
@@ -42,6 +55,7 @@ class Signin extends Component {
                     <div className="InputDivision">
                         <button className="Button" onClick={this.onSignin}>SIGNIN</button>
                     </div>
+                    {this.state.onSignin ? <Redirect to='/accounts' /> : <Redirect to='/signin' />}
                 </div>
                 
             </div>

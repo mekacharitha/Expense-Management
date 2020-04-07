@@ -7,6 +7,10 @@ import {
 } from 'react-router-dom';
 import Signin from './components/Signin/Signin';
 import Signup from './components/Signup/Signup';
+import Accounts from './components/Accounts/Accounts';
+import AddAccounts from './components/Accounts/AddAccount/AddAccount';
+import AddTransaction from './components/Transaction/AddTransaction/AddTransaction';
+
 import {localStorageGetItem , localStorageSetItem} from './services/utils';
 
 class App extends Component {
@@ -15,6 +19,16 @@ class App extends Component {
     let usersStorageItem = localStorageGetItem('users');
     if(!usersStorageItem){
      localStorageSetItem('users', []);
+    }
+    
+    let accStorageItem = localStorageGetItem("accounts");
+    if(!accStorageItem){
+      localStorageSetItem("accounts" , [])
+    }
+
+    let transcStorageItem = localStorageGetItem("transactions");
+    if(!transcStorageItem){
+      localStorageSetItem("transactions" , [])
     }
   }
 
@@ -25,6 +39,10 @@ class App extends Component {
           <Redirect from="/" to="/signin" />
           <Route exact path='/signin'><Signin /></Route>
           <Route exact path="/signup"><Signup /></Route>
+          <Route exact path="/accounts"><Accounts /></Route>
+          <Route exact path="/addAccounts"><AddAccounts/></Route>
+          <Route exact path="/addTransaction"><AddTransaction /></Route>
+
         </Router>
       </div>
     );

@@ -1,11 +1,16 @@
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createUser } from '../../services/users';
 import { localStorageSetItem, localStorageGetItem } from '../../services/utils';
 import './Signup.css';
-import { Link  } from 'react-router-dom';
+import { Link , Redirect } from 'react-router-dom';
 
 class Signup extends Component {
+
+    state = {
+        onSignup : false,
+    }
 
     componentWillMount() {
         let userIdStorageItem = localStorageGetItem("userId");
@@ -33,6 +38,9 @@ class Signup extends Component {
         try {
             createUser(user);
             alert("Signup successful");
+            this.setState({
+                onSignup : true
+            })
         }
         catch (e) {
             alert(e.message);
@@ -42,7 +50,8 @@ class Signup extends Component {
     render() {
         return (
             <div>
-                <div style={{marginTop:"20%"}}>
+                <div style={{marginTop:"18%"}}>
+                    <h2>EXPENSE TRACKER</h2>
                     <div className="InputDivision">
                         <input type="text" placeholder="USERNAME" className="Input" onChange={this.onUserNameChange} />
                     </div>
@@ -56,6 +65,7 @@ class Signup extends Component {
                         <button className="Button" onClick={this.onSignup}>SIGNUP</button>
                     </div>
                 </div>
+                {this.state.onSignup ? <Redirect to="/signin" /> : <Redirect to="/signup" />}
             </div>
             
         );
