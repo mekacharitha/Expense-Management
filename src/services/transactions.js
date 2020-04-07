@@ -43,7 +43,6 @@ export const addTransaction = (transaction) => {
 }
 
 
-
 export const getTransactions = () => {
     let payload = jwt.decode(localStorageGetItem("token"));
     let transactions = localStorageGetItem("transactions");
