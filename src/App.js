@@ -10,6 +10,8 @@ import Signup from './components/Signup/Signup';
 import Accounts from './components/Accounts/Accounts';
 import AddAccounts from './components/Accounts/AddAccount/AddAccount';
 import AddTransaction from './components/Transaction/AddTransaction/AddTransaction';
+// import Transaction from './components/Transaction/Transaction';
+import SpecificAccount from './components/Accounts/SpecificAccount/SpecificAcccount';
 
 import {localStorageGetItem , localStorageSetItem} from './services/utils';
 
@@ -42,7 +44,8 @@ class App extends Component {
           <Route exact path="/accounts"><Accounts /></Route>
           <Route exact path="/addAccounts"><AddAccounts/></Route>
           <Route exact path="/addTransaction"><AddTransaction /></Route>
-
+          <Route path="/editTransaction"><AddTransaction /></Route>
+          <Route path="/transactions"><div>ABC</div></Route>
         </Router>
       </div>
     );

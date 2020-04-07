@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Accounts.css';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { localStorageSetItem, localStorageGetItem } from '../../services/utils';
 import { getAccounts } from '../../services/Accounts';
 import Transactions from '../Transaction/Transaction';
@@ -11,6 +11,7 @@ class Accounts extends Component {
 
     state={
         onDelete:false,
+        divClicked:"",
     }
 
     componentWillMount() {
@@ -18,6 +19,12 @@ class Accounts extends Component {
         if (!accountId) {
             localStorageSetItem("accountId", 0)
         }
+    }
+
+    handleDivClicked = (name) => {
+        this.setState({
+            divClicked:name,
+        })
     }
 
     handleDelete= ()=>{
@@ -38,7 +45,7 @@ class Accounts extends Component {
                     </div>
                     <div style={{ overflowX: "auto", display: "flex" }}>
                         {usersAccountDetails.map(obj => {
-                            return (<div className="AccountCard">
+                            return (<div className="AccountCard" onClick={()=>{this.handleDivClicked(obj.accountName)}}>
                                 {obj.accountName}
                                 <b style={{ fontSize: "larger" }}> ₹ {obj.accountBalance} </b>
                             </div>)
@@ -56,6 +63,7 @@ class Accounts extends Component {
                     </div>
                     <Transactions onDelete={this.handleDelete}/>
                 </div>
+                {this.state.divClicked ? <Redirect to={`/transactions/${this.state.divClicked}`} /> : null}
             </div>
         );
     }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { deleteTransaction } from '../../services/transactions';
-import { Redirect, Link } from 'react-router-dom';
+import {  Link } from 'react-router-dom';
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import {getTransactions} from '../../services/transactions';
@@ -25,7 +25,7 @@ class Transaction extends React.Component {
                     <div> {item.amount} </div>
                     <div> {item.accountId} </div>
                     <MdDelete onClick={()=>this.handleDelete(item.transactionId)} />
-                    <Link to='/addTransaction'><FiEdit style={{color:"black"}}/></Link>
+                    <Link to={`/editTransaction/${item.transactionId}`}><FiEdit style={{color:"black"}}/></Link>
                 </div>
                 })}
 

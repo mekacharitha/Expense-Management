@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import { addTransaction } from '../../../services/transactions';
+import { addTransaction , editTransaction} from '../../../services/transactions';
 import { getAccounts } from '../../../services/Accounts';
 import './AddTransaction.css';
 
@@ -11,7 +11,8 @@ class AddTransaction extends React.Component {
         amount: 0,
         date: '',
         addedTransaction: false,
-        accountName: ''
+        accountName: '',
+        payerName: "",
     }
     componentWillMount() {
         let transactionId = localStorage.getItem("transactionId");
@@ -19,6 +20,10 @@ class AddTransaction extends React.Component {
             localStorage.setItem("transactionId", 0)
         }
     }
+    handlePayer = (e) => {
+        this.setState({ payerName: e.target.value })
+    }
+
     handleAddTransaction = async () => {
         let transaction = {
             transactionType: this.state.transactionType,
@@ -27,12 +32,19 @@ class AddTransaction extends React.Component {
             date: this.state.date,
             accountName: this.state.accountName
         }
-        let onAddTransaction = addTransaction(transaction)
-        if (onAddTransaction)
-            await this.setState({ addedTransaction: true })
-        else
-            await this.setState({ addedTransaction: false })
+        if (window.location.pathname == '/addtransaction') {
+            let onAddTransaction = addTransaction(transaction)
+            if (onAddTransaction)
+                await this.setState({ addedTransaction: true })
+            else
+                await this.setState({ addedTransaction: false })
+        }
+        else {
+            let onEditTransaction = editTransaction(transaction)
+        }
     }
+
+
     handleTransactionType = (e) => {
         this.setState({ transactionType: e.target.value })
     }
@@ -51,56 +63,55 @@ class AddTransaction extends React.Component {
     render() {
         let userAccounts = getAccounts();
         let accountName = userAccounts.map(obj => {
-            return(<option label={obj.accountName}></option>) ;
+            return (<option label={obj.accountName}>{obj.accountName}</option>);
         })
         return (
-            <div  style={{textAlign:"left" , marginLeft:"50px"}}>
+            <div style={{ textAlign: "left", marginLeft: "50px" }}>
                 <h2>NEW TRANSACTION</h2>
                 <div>
-                    <input type="radio" id="income" style={{ margin: "5px" }} onChange={this.handleTransactionType} />
-                    <label for="income" style={{ marginRight: "25px" ,fontWeight:"bold" , fontSize:"large"}}>Income</label>
+                    <input type="radio" id="income" value="income" style={{ margin: "5px" }} onChange={this.handleTransactionType} />
+                    <label for="income" style={{ marginRight: "25px", fontWeight: "bold", fontSize: "large" }}>Income</label>
 
-                    <input type="radio" id="expense" style={{ margin: "5px" }} onChange={this.handleTransactionType} />
-                    <label for="expense" style={{fontWeight:"bold" , fontSize:"large"}}>Expense</label>
+                    <input type="radio" id="expense" value="expense" style={{ margin: "5px" }} onChange={this.handleTransactionType} />
+                    <label for="expense" style={{ fontWeight: "bold", fontSize: "large" }}>Expense</label>
                 </div>
 
                 <div style={{ margin: "10px" }}>
-                    <label  style={{fontWeight:"bold" , fontSize:"large"}}>Payee / Payer</label>
+                    <label style={{ fontWeight: "bold", fontSize: "large" }}>Payee / Payer</label>
                     <br />
                     <input type="text" onChange={this.handlePayer} className="InputField"></input>
                 </div>
 
                 <div style={{ margin: "10px" }}>
-                    <label style={{fontWeight:"bold" , fontSize:"large"}}>Description</label>
+                    <label style={{ fontWeight: "bold", fontSize: "large" }}>Description</label>
                     <br />
                     <input type="text" onChange={this.handleDescription} className="InputField"></input>
                 </div>
 
                 <div style={{ margin: "10px" }}>
-                    <label  style={{fontWeight:"bold" , fontSize:"large"}}>Account</label>
+                    <label style={{ fontWeight: "bold", fontSize: "large" }}>Account</label>
                     <br />
-                    <select onChange={this.handleAccountName} className="InputField">
+                    <select value={this.state.accountName} onChange={this.handleAccountName} className="InputField">
                         <option label="Select an Account "></option>
                         {accountName}
                     </select>
                 </div>
 
                 <div style={{ margin: "10px" }}>
-                    <label style={{fontWeight:"bold" , fontSize:"large"}}>Amount</label>
+                    <label style={{ fontWeight: "bold", fontSize: "large" }}>Amount</label>
                     <br />
                     <input type="text" onChange={this.handleAmount} className="InputField"></input>
                 </div>
 
-                {/* <input type="text" placeholder="Transaction Type" onChange={this.handleTransactionType}></input>
-                <input type="text" placeholder="Description" onChange={this.handleDescription}></input>
-                <input type="text" placeholder="amount" onChange={this.handleAmount}></input>
-                <input type="text" placeholder="Account Name" onChange={this.handleAccountName}></input>
-                <input type="text" placeholder="Date" onChange={this.handleDate}></input> */}
-                <button onClick={this.handleAddTransaction} className="AddTranscButton" style={{marginLeft:"50px"}}> Add Transaction</button>
+                <div style={{ margin: "10px" }}>
+                    <label style={{ fontWeight: "bold", fontSize: "large" }}>Date</label>
+                    <br />
+                    <input type="text" onChange={this.handleDate} className="InputField"></input>
+                </div>
 
+                <button onClick={this.handleAddTransaction} className="AddTranscButton" style={{ marginLeft: "50px" }}> Add Transaction</button>
 
-
-                {this.state.addedTransaction ? <Redirect to='/accounts'></Redirect> : <Redirect to='/addtransaction'></Redirect>}
+                {/* {this.state.addedTransaction ? <Redirect to='/accounts'></Redirect> : <Redirect to='/addtransaction'></Redirect>} */}
             </div>
         )
     }
