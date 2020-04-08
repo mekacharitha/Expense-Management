@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {connect } from 'react-redux';
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -38,23 +39,24 @@ class App extends Component {
   }
 
   render() {
-   let token = localStorageGetItem("token");
+   let token = localStorageGetItem("token") || this.props.token;
+   console.log(" TOKEN -> ", token);
     return (
       <div className="App">
         <Router>
-          <Redirect from="/" to="/signin" />
           {!token ?
             
               <Switch>
-              <Route exact path='/signin'><Signin /></Route>
-              <Route exact path="/signup"><Signup /></Route>
+                <Route exact path='/signin'><Signin /></Route>
+                <Route exact path="/signup"><Signup /></Route>
+                <Route path="*" render={()=>{return <Redirect to="/signin"/>}} exact/> 
               </Switch>
            
             :
             <Switch>
               
-             <Route path="/accounts" > <Dashboard /></Route>
-              <Route path="/" render={() => <Redirect to="/accounts" />} exact/>
+              <Route path="/accounts" component={Dashboard} />
+              <Route path="*" render={() => <Redirect to="/accounts" />} exact/>
             </Switch>
            
              }
@@ -65,4 +67,11 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    token: state.Users.token,
+  }
+}
+
+
+export default connect(mapStateToProps)(App);

@@ -55,7 +55,7 @@ class Accounts extends Component {
                             </div>)
                         })}
                         <div className="AccountCard" style={{ backgroundColor: "#aaf2c3" }}>
-                            <Link to='/addAccounts'><AiOutlinePlus /></Link>
+                            <Link to="/accounts/addAccounts"><AiOutlinePlus /></Link>
                         </div>
                     </div>
                 </div>
@@ -63,11 +63,11 @@ class Accounts extends Component {
                 <div style={{ marginTop: "100px" }}>
                     <div style={{ textAlign: "left", marginLeft: "50px", marginBottom: "25px" }}>
                         <label style={{ fontWeight: "bold", fontSize: "17px", marginRight: "20px" }}> RECENT TRANSACTIONS</label>
-                        <Link to="/addTransaction" className="AddTransactionButton" >Add Transaction</Link>
+                        <Link to="/accounts/addTransaction" className="AddTransactionButton" >Add Transaction</Link>
                     </div>
                     <Transactions onDelete={this.handleDelete} />
                 </div>
-                {this.state.divClicked ? <Redirect to={`/transactions/${this.state.divClicked}`} /> : null}
+                {this.state.divClicked ? <Redirect to={`accounts/transactions/${this.state.divClicked}`} /> : null}
             </div>
         );
     }

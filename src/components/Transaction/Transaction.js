@@ -30,7 +30,7 @@ class Transaction extends React.Component {
                         <div className="TransactionItem"> {item.amount} </div>
                         <div className="TransactionItem">{getAccountNameById(item.accountId)}</div>
                         <MdDelete onClick={() => this.handleDelete(item.transactionId)} />
-                        <Link to={`/editTransaction/${item.transactionId}`}><FiEdit style={{ color: "black" }} /></Link>
+                        <Link to={`/accounts/editTransaction/${item.transactionId}`}><FiEdit style={{ color: "black" }} /></Link>
                     </div>
                 })}
 

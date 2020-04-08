@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { verifyUser } from '../../services/users';
-//import {localStorageSetItem , localStorageGetItem} from '../../services/utils';
+import {localStorageSetItem , localStorageGetItem} from '../../services/utils';
 import { Link , Redirect  } from 'react-router-dom';
 import './Signin.css';
 
+//var counter = 1;
 
 class Signin extends Component {
 
-    state={
-        onSignin : false,
+    constructor(props){
+        super(props);
+
+        this.state={
+            onSignin : false,
+        }
     }
 
     onUserNameChange = (event) => {
@@ -20,25 +25,9 @@ class Signin extends Component {
         this.props.passwordChange(event.target.value)
     }
 
-    onSignin = async() => {
-        let user = {
-            userName: this.props.userName,
-            password: this.props.password,
-        }
-
-        await this.setState({
-            onSignin: verifyUser(user)
-        }) 
-        if(this.state.onSignin){
-            alert("Signin successful");
-        }
-        else{
-            alert("Signin failed")
-        }
-       
-    }
-
+    
     render() {
+       // console.log("counter ", counter++);
         return (
             <div>
                 <div style={{ marginTop: "18%" }}>
@@ -53,9 +42,14 @@ class Signin extends Component {
                         <Link to="/signup">Does not have an account ? Register here</Link>
                     </div>
                     <div className="InputDivision">
-                        <button className="Button" onClick={this.onSignin}>SIGNIN</button>
+                        <button className="Button" onClick={()=>{
+                            this.props.onSignin({
+                                userName: this.props.userName,
+                                password: this.props.password,
+                            })
+                            }}>SIGNIN</button>
                     </div>
-                    {this.state.onSignin ? <Redirect to='/accounts' /> : <Redirect to='/signin' />}
+                    {this.props.token ? <Redirect to='/accounts' /> : null}
                 </div>
                 
             </div>
@@ -67,6 +61,7 @@ const mapStateToProps = (state) => ({
     userName: state.Users.userName,
     password: state.Users.password,
     userId: state.Users.userId,
+    token: state.Users.token,
 })
 
 const mapDispatchToProps = (dispatch) => {
@@ -82,7 +77,21 @@ const mapDispatchToProps = (dispatch) => {
             dispatch({
                 type: "PASSWORDCHANGE",
                 payload: value,
+            }),
+
+        onSignin: (user) => {
+            let token = verifyUser(user)
+
+            localStorageSetItem("token", token);
+            
+            dispatch({
+                type: "SET_TOKEN",
+                payload: {
+                    token: token ? token : null,
+                }
             })
+            
+        }
 
     }
 }

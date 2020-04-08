@@ -2,6 +2,7 @@ const initialState = {
     userName: "",
     password: "",
     userId:"",
+    token: null,
 }
 
 const userReducer = (state=initialState , action) => {
@@ -17,6 +18,13 @@ const userReducer = (state=initialState , action) => {
             return {
                 ...state,
                 password: action.payload
+            }
+        }
+
+        case "SET_TOKEN": {
+            return {
+                ...state,
+                token: action.payload.token,
             }
         }
 

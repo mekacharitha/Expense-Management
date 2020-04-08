@@ -42,6 +42,6 @@ export const getAccountNameById = (accId) => {
     let accName = accounts.filter(obj => {
         return obj.accountId == accId && obj.userId == payload.userId
     })
-    console.log(accName[0].accountName);
+    //console.log(accName[0].accountName);
     return accName[0].accountName;
 }

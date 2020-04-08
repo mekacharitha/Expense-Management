@@ -30,10 +30,10 @@ export const verifyUser = (user) => {
         return item.userName === user.userName && item.password === user.password
     })
     if (userIndex !== -1) {
-        console.log(users[userIndex].userId);
+       // console.log(users[userIndex].userId);
         let token = jwt.sign({ userName: user.userName , userId: users[userIndex].userId }, "my secret token")
-        localStorageSetItem("token" ,token)
-        return true
+        // localStorageSetItem("token" ,token)
+        return token
     }
     return false
 

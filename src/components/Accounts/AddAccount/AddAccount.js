@@ -46,7 +46,7 @@ class Accounts extends React.Component {
                     <button onClick={this.handleAddAccount} className="AddAccButton">Add Account</button>
                 </div>
 
-                {this.state.accountAdded ? <Redirect to="/accounts" /> : <Redirect to="/addAccounts" />}
+                {/* {this.state.accountAdded ? <Redirect to="/accounts" /> : <Redirect to="/addAccounts" />} */}
             </div>
         )
     }

@@ -17,9 +17,9 @@ class Transaction extends React.Component {
 
     render() {
         let transactions = getTransactionsByAccountName();
-        let accName = window.location.pathname.substr(14);
+        let accName = window.location.pathname.substr(23);
         let accBalance = getAccountBalance(accName);
-        console.log(transactions.length);
+        console.log(transactions);
         return (
             <div style={{ marginLeft: "50px", }} >
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -33,11 +33,11 @@ class Transaction extends React.Component {
                         </div>
                     </div>
                     <div style={{margin:"25px" , marginTop:"50px", marginRight:"500px"}}>
-                        <Link to={`/addTransaction/${accName}`} className="AddTransactionButton">Add Transaction</Link>
+                        <Link to={`/accounts/addTransaction/${accName}`} className="AddTransactionButton">Add Transaction</Link>
                     </div>
                 </div>
 
-                {transactions[0] !== undefined ? transactions.map(item => {
+                {transactions.length !==0 ? transactions.map(item => {
                     return <div style={{ height: "50px", width: "75%", justifyContent: "space-around", display: "flex", border: "1px solid", margin: "10px", paddingTop: "20px" }}>
                         <div> {item.transactionType} </div>
                         <div> {item.description} </div>
@@ -45,7 +45,7 @@ class Transaction extends React.Component {
                         <div> {item.amount} </div>
                         <div> {item.accountId} </div>
                         <MdDelete onClick={() => this.handleDelete(item.transactionId)} />
-                        <Link to={`/editTransaction/${item.transactionId}`}><FiEdit style={{ color: "black" }} /></Link>
+                        <Link to={`accounts/editTransaction/${item.transactionId}`}><FiEdit style={{ color: "black" }} /></Link>
                     </div>
                 })
                     :

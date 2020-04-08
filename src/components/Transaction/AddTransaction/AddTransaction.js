@@ -39,10 +39,10 @@ class AddTransaction extends React.Component {
             accountName: this.state.accountName
         }
         if(transaction.accountName === ""){
-            transaction.accountName = window.location.pathname.substr(16); 
+            transaction.accountName = window.location.pathname.substr(25); 
         }
 
-        if (window.location.pathname.startsWith('/addTransaction') ) {
+        if (window.location.pathname.startsWith('/accounts/addTransaction') ) {
             let onAddTransaction = addTransaction(transaction)
             if (onAddTransaction)
                 await this.setState({ addedTransaction: true })
@@ -74,14 +74,14 @@ class AddTransaction extends React.Component {
     render() {
         let path = window.location.pathname;
         let transaction = null;
-        if (path.startsWith("/edit")) {
-            var transcId = window.location.pathname.substr(17);
+        if (path.startsWith("/accounts/edit")) {
+            var transcId = window.location.pathname.substr(26);
             transaction = getTransactionById(transcId);
             console.log(transaction);
 
         }
         else {
-            var accName = window.location.pathname.substr(16);
+            var accName = window.location.pathname.substr(25);
         }
 
         let redirect = "";

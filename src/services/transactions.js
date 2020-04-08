@@ -61,8 +61,9 @@ export const getTransactionsByAccountName = () => {
     let accounts = localStorageGetItem("accounts");
 
     let accountIndex = accounts.findIndex(item => {
-        return (item.accountName === window.location.pathname.substr(14) && item.userId == payload.userId)
+        return (item.accountName === window.location.pathname.substr(23) && item.userId == payload.userId)
     })
+   // console.log(accountIndex);
     if (accountIndex != -1) {
         transactionByAccountName = transactions.filter(obj => {
             return obj.accountId == accounts[accountIndex].accountId
