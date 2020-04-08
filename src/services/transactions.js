@@ -107,6 +107,16 @@ export const deleteTransaction = (transactionId) => {
     }
 }
 
+export const getTransactionById = (transacId)=>{
+    let transactions = localStorageGetItem('transactions');
+    let transaction = transactions.filter(obj => {
+        return (obj.transactionId == transacId)
+    })
+    //console.log(transaction);
+    return transaction;
+    
+}
+
 export const editTransaction = (transaction) => {
     let payload = jwt.decode(localStorageGetItem("token"));
     let transactionId = Number(window.location.pathname.substr(17))

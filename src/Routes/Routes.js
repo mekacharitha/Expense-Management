@@ -32,7 +32,7 @@ class App extends Component {
           {header}
           <Route exact path="/accounts"><Accounts /></Route>
           <Route exact path="/addAccounts"><AddAccounts/></Route>
-          <Route exact path="/addTransaction"><AddTransaction /></Route>
+          <Route path="/addTransaction"><AddTransaction /></Route>
           <Route path="/editTransaction"><AddTransaction /></Route>
           <Route path="/transactions"><SpecificAccount /></Route>
        

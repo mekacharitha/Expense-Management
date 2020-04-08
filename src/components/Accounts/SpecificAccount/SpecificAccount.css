@@ -10,3 +10,14 @@
     justify-content: space-around;
     flex-shrink: 0;
 }
+
+
+.AddTransactionButton{
+    width:120px;
+    height:25px;
+    background-color: darkslateblue;
+    color: aliceblue;
+    display: inline-block;
+    text-decoration: none;
+    padding: 10px;
+}

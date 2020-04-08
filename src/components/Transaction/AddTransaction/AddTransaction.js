@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import { addTransaction, editTransaction } from '../../../services/transactions';
+import { addTransaction, editTransaction, getTransactionById } from '../../../services/transactions';
 import { getAccounts } from '../../../services/Accounts';
 import './AddTransaction.css';
 
@@ -63,6 +63,18 @@ class AddTransaction extends React.Component {
         this.setState({ date: e.target.value })
     }
     render() {
+        let path = window.location.pathname;
+        //console.log(path);
+        if(path.startsWith("/edit")){
+           var transcId = window.location.pathname.substr(17);
+           //console.log(transcId);
+           var transaction = getTransactionById(transcId);
+           //console.log(transaction);
+        }
+        else{
+            var accName = window.location.pathname.substr(16);
+            //console.log(accName);
+        } 
 
         let redirect = "";
         if (this.state.addedTransaction || this.state.editedTransaction)
@@ -95,14 +107,24 @@ class AddTransaction extends React.Component {
                     <input type="text" onChange={this.handleDescription} className="InputField"></input>
                 </div>
 
-                <div style={{ margin: "10px" }}>
-                    <label style={{ fontWeight: "bold", fontSize: "large" }}>Account</label>
-                    <br />
-                    <select value={this.state.accountName} onChange={this.handleAccountName} className="InputField">
-                        <option label="Select an Account "></option>
-                        {accountName}
-                    </select>
-                </div>
+                {accName ?
+                    <div style={{ margin: "10px" }}>
+                        <label style={{ fontWeight: "bold", fontSize: "large" }}>Account</label>
+                        <br />
+                        <select value={this.state.accountName} onChange={this.handleAccountName} className="InputField" disabled>
+                            <option label={accName}></option>
+                        </select>
+                    </div>
+                    :
+                    <div style={{ margin: "10px" }}>
+                        <label style={{ fontWeight: "bold", fontSize: "large" }}>Account</label>
+                        <br />
+                        <select value={this.state.accountName} onChange={this.handleAccountName} className="InputField">
+                            <option label="Select an Account "></option>
+                            {accountName}
+                        </select>
+                    </div>
+                }
 
                 <div style={{ margin: "10px" }}>
                     <label style={{ fontWeight: "bold", fontSize: "large" }}>Amount</label>
