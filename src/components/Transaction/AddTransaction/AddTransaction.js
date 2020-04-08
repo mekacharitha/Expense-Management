@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import { addTransaction , editTransaction} from '../../../services/transactions';
+import { addTransaction, editTransaction } from '../../../services/transactions';
 import { getAccounts } from '../../../services/Accounts';
 import './AddTransaction.css';
 
@@ -11,6 +11,7 @@ class AddTransaction extends React.Component {
         amount: 0,
         date: '',
         addedTransaction: false,
+        editedTransaction: false,
         accountName: '',
         payerName: "",
     }
@@ -36,11 +37,12 @@ class AddTransaction extends React.Component {
             let onAddTransaction = addTransaction(transaction)
             if (onAddTransaction)
                 await this.setState({ addedTransaction: true })
-            else
-                await this.setState({ addedTransaction: false })
+            await this.setState({ addedTransaction: false })
         }
         else {
             let onEditTransaction = editTransaction(transaction)
+            await this.setState({ editedTransaction: true })
+            await this.setState({ editedTransaction: false })
         }
     }
 
@@ -61,6 +63,11 @@ class AddTransaction extends React.Component {
         this.setState({ date: e.target.value })
     }
     render() {
+
+        let redirect = "";
+        if (this.state.addedTransaction || this.state.editedTransaction)
+            redirect = <Redirect to='/accounts'></Redirect>
+
         let userAccounts = getAccounts();
         let accountName = userAccounts.map(obj => {
             return (<option label={obj.accountName}>{obj.accountName}</option>);
@@ -110,7 +117,7 @@ class AddTransaction extends React.Component {
                 </div>
 
                 <button onClick={this.handleAddTransaction} className="AddTranscButton" style={{ marginLeft: "50px" }}> Add Transaction</button>
-
+                {redirect}
                 {/* {this.state.addedTransaction ? <Redirect to='/accounts'></Redirect> : <Redirect to='/addtransaction'></Redirect>} */}
             </div>
         )
