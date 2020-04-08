@@ -3,7 +3,8 @@ import './App.css';
 import {
   BrowserRouter as Router,
   Route,
-  Redirect
+  Redirect,
+  Switch
 } from 'react-router-dom';
 import Signin from './components/Signin/Signin';
 import Signup from './components/Signup/Signup';
@@ -12,6 +13,7 @@ import AddAccounts from './components/Accounts/AddAccount/AddAccount';
 import AddTransaction from './components/Transaction/AddTransaction/AddTransaction';
 import SpecificAccount from './components/Accounts/SpecificAccount/SpecificAcccount';
 import Routes from './Routes/Routes';
+import Dashboard from './components/Accounts/DashBoard';
 
 import { localStorageGetItem, localStorageSetItem } from './services/utils';
 
@@ -36,19 +38,27 @@ class App extends Component {
   }
 
   render() {
-   
+   let token = localStorageGetItem("token");
     return (
       <div className="App">
         <Router>
           <Redirect from="/" to="/signin" />
-          
-            <div>
+          {!token ?
+            
+              <Switch>
               <Route exact path='/signin'><Signin /></Route>
               <Route exact path="/signup"><Signup /></Route>
-            </div>
-            
-            <Routes />
-          
+              </Switch>
+           
+            :
+            <Switch>
+              
+             <Route path="/accounts" > <Dashboard /></Route>
+              <Route path="/" render={() => <Redirect to="/accounts" />} exact/>
+            </Switch>
+           
+             }
+
         </Router>
       </div>
     );

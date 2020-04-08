@@ -2,6 +2,9 @@ import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { addTransaction, editTransaction, getTransactionById } from '../../../services/transactions';
 import { getAccounts } from '../../../services/Accounts';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import './AddTransaction.css';
 
 class AddTransaction extends React.Component {
@@ -9,11 +12,12 @@ class AddTransaction extends React.Component {
         transactionType: '',
         description: '',
         amount: 0,
-        date: '',
+        date: new Date(),
         addedTransaction: false,
         editedTransaction: false,
         accountName: '',
         payerName: "",
+        
     }
     componentWillMount() {
         let transactionId = localStorage.getItem("transactionId");
@@ -21,6 +25,7 @@ class AddTransaction extends React.Component {
             localStorage.setItem("transactionId", 0)
         }
     }
+    
     handlePayer = (e) => {
         this.setState({ payerName: e.target.value })
     }
@@ -33,7 +38,11 @@ class AddTransaction extends React.Component {
             date: this.state.date,
             accountName: this.state.accountName
         }
-        if (window.location.pathname == '/addTransaction') {
+        if(transaction.accountName === ""){
+            transaction.accountName = window.location.pathname.substr(16); 
+        }
+
+        if (window.location.pathname.startsWith('/addTransaction') ) {
             let onAddTransaction = addTransaction(transaction)
             if (onAddTransaction)
                 await this.setState({ addedTransaction: true })
@@ -59,8 +68,8 @@ class AddTransaction extends React.Component {
     handleAmount = (e) => {
         this.setState({ amount: e.target.value })
     }
-    handleDate = (e) => {
-        this.setState({ date: e.target.value })
+    handleDate = date => {
+        this.setState({ date: date })
     }
     render() {
         let path = window.location.pathname;
@@ -136,7 +145,14 @@ class AddTransaction extends React.Component {
                     <div style={{ margin: "10px" }}>
                         <label style={{ fontWeight: "bold", fontSize: "large" }}>Date</label>
                         <br />
-                        <input type="text" onChange={this.handleDate} className="InputField" value={transaction[0].date}></input>
+                        {/* <input type="text" onChange={this.handleDate} className="InputField" value={transaction[0].date}></input> */}
+                        <DatePicker
+                            dateFormat='dd-mm-yyyy'
+                            selected={this.state.date}
+                            onChange={this.handleDate}
+                            value={this.state.date}
+                            className="InputField"
+                        />
                     </div>
 
                     <button onClick={this.handleAddTransaction} className="AddTranscButton" style={{ marginLeft: "50px" }}> Add Transaction</button>
@@ -169,8 +185,8 @@ class AddTransaction extends React.Component {
                             <div style={{ margin: "10px" }}>
                                 <label style={{ fontWeight: "bold", fontSize: "large" }}>Account</label>
                                 <br />
-                                <select value={this.state.accountName} onChange={this.handleAccountName} className="InputField" disabled>
-                                    <option label={accName}></option>
+                                <select value={accName} onChange={this.handleAccountName} className="InputField" disabled>
+                                    <option label={accName} ></option>
                                 </select>
                             </div>
                             :
@@ -193,7 +209,13 @@ class AddTransaction extends React.Component {
                         <div style={{ margin: "10px" }}>
                             <label style={{ fontWeight: "bold", fontSize: "large" }}>Date</label>
                             <br />
-                            <input type="text" onChange={this.handleDate} className="InputField" ></input>
+                            <DatePicker
+                            dateFormat='dd-MM-yyyy'
+                            selected={this.state.date}
+                            onChange={this.handleDate}
+                            value={this.state.date}
+                            className="InputField"
+                        />
                         </div>
 
                         <button onClick={this.handleAddTransaction} className="AddTranscButton" style={{ marginLeft: "50px" }}> Add Transaction</button>
