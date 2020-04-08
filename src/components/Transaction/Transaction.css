@@ -1,0 +1,4 @@
+.TransactionItem{
+    width: calc(75vh/6);
+    flex-shrink: 0;
+}
