@@ -35,3 +35,13 @@ export const getAccounts = () => {
     })
     return userAccounts ;
 }
+
+export const getAccountNameById = (accId) => {
+    let accounts = localStorageGetItem('accounts');
+    let payload=jwt.decode(localStorageGetItem("token"));
+    let accName = accounts.filter(obj => {
+        return obj.accountId == accId && obj.userId == payload.userId
+    })
+    console.log(accName[0].accountName);
+    return accName[0].accountName;
+}

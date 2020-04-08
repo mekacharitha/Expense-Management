@@ -64,17 +64,16 @@ class AddTransaction extends React.Component {
     }
     render() {
         let path = window.location.pathname;
-        //console.log(path);
-        if(path.startsWith("/edit")){
-           var transcId = window.location.pathname.substr(17);
-           //console.log(transcId);
-           var transaction = getTransactionById(transcId);
-           //console.log(transaction);
+        let transaction = null;
+        if (path.startsWith("/edit")) {
+            var transcId = window.location.pathname.substr(17);
+            transaction = getTransactionById(transcId);
+            console.log(transaction);
+
         }
-        else{
+        else {
             var accName = window.location.pathname.substr(16);
-            //console.log(accName);
-        } 
+        }
 
         let redirect = "";
         if (this.state.addedTransaction || this.state.editedTransaction)
@@ -87,60 +86,120 @@ class AddTransaction extends React.Component {
         return (
             <div style={{ textAlign: "left", marginLeft: "50px" }}>
                 <h2>NEW TRANSACTION</h2>
-                <div>
-                    <input type="radio" id="income" value="income" style={{ margin: "5px" }} onChange={this.handleTransactionType} />
+                {transaction ? 
+                    <div>
+                    {transaction[0].transactionType == "income" ? <div>
+                    <input type="radio" id="income" value="income" checked="checked" style={{ margin: "5px" }} onChange={this.handleTransactionType} />
                     <label for="income" style={{ marginRight: "25px", fontWeight: "bold", fontSize: "large" }}>Income</label>
 
                     <input type="radio" id="expense" value="expense" style={{ margin: "5px" }} onChange={this.handleTransactionType} />
                     <label for="expense" style={{ fontWeight: "bold", fontSize: "large" }}>Expense</label>
-                </div>
+                </div> 
+                :
+                <div>
+                    <input type="radio" id="income" value="income" style={{ margin: "5px" }} onChange={this.handleTransactionType} />
+                    <label for="income" style={{ marginRight: "25px", fontWeight: "bold", fontSize: "large" }}>Income</label>
 
-                <div style={{ margin: "10px" }}>
-                    <label style={{ fontWeight: "bold", fontSize: "large" }}>Payee / Payer</label>
-                    <br />
-                    <input type="text" onChange={this.handlePayer} className="InputField"></input>
+                    <input type="radio" id="expense" value="expense" checked="checked" style={{ margin: "5px" }} onChange={this.handleTransactionType} />
+                    <label for="expense" style={{ fontWeight: "bold", fontSize: "large" }}>Expense</label>
                 </div>
+                 }
 
-                <div style={{ margin: "10px" }}>
-                    <label style={{ fontWeight: "bold", fontSize: "large" }}>Description</label>
-                    <br />
-                    <input type="text" onChange={this.handleDescription} className="InputField"></input>
-                </div>
-
-                {accName ?
                     <div style={{ margin: "10px" }}>
-                        <label style={{ fontWeight: "bold", fontSize: "large" }}>Account</label>
+                        <label style={{ fontWeight: "bold", fontSize: "large" }}>Payee / Payer</label>
                         <br />
-                        <select value={this.state.accountName} onChange={this.handleAccountName} className="InputField" disabled>
-                            <option label={accName}></option>
-                        </select>
+                        <input type="text" onChange={this.handlePayer} className="InputField" ></input>
                     </div>
-                    :
+
                     <div style={{ margin: "10px" }}>
-                        <label style={{ fontWeight: "bold", fontSize: "large" }}>Account</label>
+                        <label style={{ fontWeight: "bold", fontSize: "large" }}>Description</label>
                         <br />
-                        <select value={this.state.accountName} onChange={this.handleAccountName} className="InputField">
-                            <option label="Select an Account "></option>
-                            {accountName}
-                        </select>
+                        <input type="text" onChange={this.handleDescription} className="InputField" value={transaction[0].description}></input>
+                    </div>
+
+                    
+                        <div style={{ margin: "10px" }}>
+                            <label style={{ fontWeight: "bold", fontSize: "large" }}>Account</label>
+                            <br />
+                            <select value={this.state.accountName} onChange={this.handleAccountName} className="InputField">
+                                <option label={transaction[0].accountName}></option>
+                                {accountName}
+                            </select>
+                        </div>
+
+                    <div style={{ margin: "10px" }}>
+                        <label style={{ fontWeight: "bold", fontSize: "large" }}>Amount</label>
+                        <br />
+                        <input type="text" onChange={this.handleAmount} className="InputField" value={transaction[0].amount}></input>
+                    </div>
+
+                    <div style={{ margin: "10px" }}>
+                        <label style={{ fontWeight: "bold", fontSize: "large" }}>Date</label>
+                        <br />
+                        <input type="text" onChange={this.handleDate} className="InputField" value={transaction[0].date}></input>
+                    </div>
+
+                    <button onClick={this.handleAddTransaction} className="AddTranscButton" style={{ marginLeft: "50px" }}> Add Transaction</button>
+                </div>
+                
+
+                :
+                    <div>
+                        <div>
+                            <input type="radio" id="income" value="income" style={{ margin: "5px" }} onChange={this.handleTransactionType} />
+                            <label for="income" style={{ marginRight: "25px", fontWeight: "bold", fontSize: "large" }}>Income</label>
+
+                            <input type="radio" id="expense" value="expense" style={{ margin: "5px" }} onChange={this.handleTransactionType} />
+                            <label for="expense" style={{ fontWeight: "bold", fontSize: "large" }}>Expense</label>
+                        </div>
+
+                        <div style={{ margin: "10px" }}>
+                            <label style={{ fontWeight: "bold", fontSize: "large" }}>Payee / Payer</label>
+                            <br />
+                            <input type="text" onChange={this.handlePayer} className="InputField" ></input>
+                        </div>
+
+                        <div style={{ margin: "10px" }}>
+                            <label style={{ fontWeight: "bold", fontSize: "large" }}>Description</label>
+                            <br />
+                            <input type="text" onChange={this.handleDescription} className="InputField" ></input>
+                        </div>
+
+                        {accName ?
+                            <div style={{ margin: "10px" }}>
+                                <label style={{ fontWeight: "bold", fontSize: "large" }}>Account</label>
+                                <br />
+                                <select value={this.state.accountName} onChange={this.handleAccountName} className="InputField" disabled>
+                                    <option label={accName}></option>
+                                </select>
+                            </div>
+                            :
+                            <div style={{ margin: "10px" }}>
+                                <label style={{ fontWeight: "bold", fontSize: "large" }}>Account</label>
+                                <br />
+                                <select value={this.state.accountName} onChange={this.handleAccountName} className="InputField">
+                                    <option label="Select an Account "></option>
+                                    {accountName}
+                                </select>
+                            </div>
+                        }
+
+                        <div style={{ margin: "10px" }}>
+                            <label style={{ fontWeight: "bold", fontSize: "large" }}>Amount</label>
+                            <br />
+                            <input type="text" onChange={this.handleAmount} className="InputField" ></input>
+                        </div>
+
+                        <div style={{ margin: "10px" }}>
+                            <label style={{ fontWeight: "bold", fontSize: "large" }}>Date</label>
+                            <br />
+                            <input type="text" onChange={this.handleDate} className="InputField" ></input>
+                        </div>
+
+                        <button onClick={this.handleAddTransaction} className="AddTranscButton" style={{ marginLeft: "50px" }}> Add Transaction</button>
                     </div>
                 }
-
-                <div style={{ margin: "10px" }}>
-                    <label style={{ fontWeight: "bold", fontSize: "large" }}>Amount</label>
-                    <br />
-                    <input type="text" onChange={this.handleAmount} className="InputField"></input>
-                </div>
-
-                <div style={{ margin: "10px" }}>
-                    <label style={{ fontWeight: "bold", fontSize: "large" }}>Date</label>
-                    <br />
-                    <input type="text" onChange={this.handleDate} className="InputField"></input>
-                </div>
-
-                <button onClick={this.handleAddTransaction} className="AddTranscButton" style={{ marginLeft: "50px" }}> Add Transaction</button>
                 {redirect}
-                {/* {this.state.addedTransaction ? <Redirect to='/accounts'></Redirect> : <Redirect to='/addtransaction'></Redirect>} */}
             </div>
         )
     }
