@@ -10,42 +10,45 @@ import Signup from './components/Signup/Signup';
 import Accounts from './components/Accounts/Accounts';
 import AddAccounts from './components/Accounts/AddAccount/AddAccount';
 import AddTransaction from './components/Transaction/AddTransaction/AddTransaction';
-// import Transaction from './components/Transaction/Transaction';
 import SpecificAccount from './components/Accounts/SpecificAccount/SpecificAcccount';
+import Routes from './Routes/Routes';
 
-import {localStorageGetItem , localStorageSetItem} from './services/utils';
+import { localStorageGetItem, localStorageSetItem } from './services/utils';
 
 class App extends Component {
 
-  componentWillMount(){
+
+  componentWillMount() {
     let usersStorageItem = localStorageGetItem('users');
-    if(!usersStorageItem){
-     localStorageSetItem('users', []);
+    if (!usersStorageItem) {
+      localStorageSetItem('users', []);
     }
-    
+
     let accStorageItem = localStorageGetItem("accounts");
-    if(!accStorageItem){
-      localStorageSetItem("accounts" , [])
+    if (!accStorageItem) {
+      localStorageSetItem("accounts", [])
     }
 
     let transcStorageItem = localStorageGetItem("transactions");
-    if(!transcStorageItem){
-      localStorageSetItem("transactions" , [])
+    if (!transcStorageItem) {
+      localStorageSetItem("transactions", [])
     }
   }
 
   render() {
+   
     return (
       <div className="App">
         <Router>
           <Redirect from="/" to="/signin" />
-          <Route exact path='/signin'><Signin /></Route>
-          <Route exact path="/signup"><Signup /></Route>
-          <Route exact path="/accounts"><Accounts /></Route>
-          <Route exact path="/addAccounts"><AddAccounts/></Route>
-          <Route exact path="/addTransaction"><AddTransaction /></Route>
-          <Route path="/editTransaction"><AddTransaction /></Route>
-          <Route path="/transactions"><SpecificAccount /></Route>
+          
+            <div>
+              <Route exact path='/signin'><Signin /></Route>
+              <Route exact path="/signup"><Signup /></Route>
+            </div>
+            
+            <Routes />
+          
         </Router>
       </div>
     );

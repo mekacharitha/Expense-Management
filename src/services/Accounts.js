@@ -3,15 +3,15 @@ import {localStorageSetItem , localStorageGetItem} from './utils';
 
 export const addAccount = (accountName , accountBalance) => {
 
-    let accounts = localStorageGetItem('accounts');              
+    let accounts = localStorageGetItem('accounts');  
+    let payload=jwt.decode(localStorageGetItem("token"));            
     let accountIndex = accounts.findIndex(item => {
-        return item.accountName === accountName
+        return ( item.accountName === accountName && item.userId === payload.userId)
     })
     if (accountIndex === -1) {
-        let payload=jwt.decode(localStorageGetItem("token"));
        // console.log(payload.userId)
         let accountId=localStorageGetItem('accountId')
-        console.log(accountBalance);
+        //console.log(accountBalance);
         let obj={
                accountId:++accountId,
                accountName:accountName,
@@ -30,10 +30,8 @@ export const addAccount = (accountName , accountBalance) => {
 export const getAccounts = () => {
     let accounts = localStorageGetItem('accounts');
     let payload=jwt.decode(localStorageGetItem("token"));
-    let userAccounts = accounts.map(obj => {
-        if(obj.userId === payload.userId){
-            return obj;
-        }
+    let userAccounts = accounts.filter(obj => {
+        return (obj.userId === payload.userId)
     })
     return userAccounts ;
 }
