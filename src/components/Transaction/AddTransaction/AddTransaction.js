@@ -1,11 +1,12 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { addTransaction, editTransaction, getTransactionById } from '../../../services/transactions';
-import {getAccountNameById} from '../../../services/Accounts';
+import { getAccountNameById } from '../../../services/Accounts';
 import { getAccounts } from '../../../services/Accounts';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
+import { RadioGroup, RadioButton } from 'react-radio-buttons';
 import './AddTransaction.css';
 import moment from "moment";
 
@@ -17,8 +18,7 @@ class AddTransaction extends React.Component {
         date: '',
         addedTransaction: false,
         editedTransaction: false,
-        accountName: window.location.pathname.substr(0, 25) != '/accounts/addTransaction/' && window.location.pathname != '/accounts/addTransaction' ?getAccountNameById(getTransactionById()[0].accountId)  : 'Select an Account',
-        arr: {}
+        accountName: window.location.pathname.substr(0, 25) != '/accounts/addTransaction/' && window.location.pathname != '/accounts/addTransaction' ? getAccountNameById(getTransactionById()[0].accountId) : 'Select an Account',
     }
 
     componentWillMount() {
@@ -29,7 +29,6 @@ class AddTransaction extends React.Component {
         let array = []
         if (window.location.pathname.substr(0, 25) != '/accounts/addTransaction/' && window.location.pathname != '/accounts/addTransaction') {
             array = getTransactionById();
-            // this.setState({amount:array[0].amount})
         }
     }
     handleAddTransaction = async () => {
@@ -40,12 +39,12 @@ class AddTransaction extends React.Component {
             date: moment(this.state.date).format('DD-MM-YYYY'),
             accountName: this.state.accountName
         }
-      //  console.log(transaction.accountName);
-        if (transaction.accountName !== window.location.pathname.substr(25) || transaction.accountName === undefined) {
+        console.log(transaction);
+        if ((transaction.accountName !== window.location.pathname.substr(25) && transaction.accountName === "Select an Account")|| transaction.accountName === undefined ) {
             transaction.accountName = window.location.pathname.substr(25);
-           // console.log(transaction.accountName);
+            console.log(transaction);
         }
-        console.log(window.location.pathname.substr(0, 25))
+        // console.log(window.location.pathname.substr(0, 25))
         if (window.location.pathname.substr(0, 25) == '/accounts/addTransaction/' || window.location.pathname == '/accounts/addTransaction') {
             let onAddTransaction = addTransaction(transaction)
             if (onAddTransaction)
@@ -60,9 +59,10 @@ class AddTransaction extends React.Component {
         }
     }
     handleTransactionType = (e) => {
-        this.setState({ transactionType: e.target.value })
+        this.setState({ transactionType: e.currentTarget.value })
     }
     handleAccountName = (e) => {
+        //console.log(e.target.value);
         this.setState({ accountName: e.target.value })
     }
     handleDescription = (e) => {
@@ -88,17 +88,25 @@ class AddTransaction extends React.Component {
         let path = window.location.pathname;
         if (path.startsWith("/accounts/add")) {
             var accName = window.location.pathname.substr(25);
-            console.log(accName);
+            //  console.log(accName);
         }
         return (
             <div style={{ textAlign: "left", marginLeft: "50px" }}>
                 <h2>NEW TRANSACTION</h2>
-                <div>
-                    <input type="radio" id="income" value="income" style={{ margin: "5px" }} onChange={this.handleTransactionType} />
-                    <label for="income" style={{ marginRight: "25px", fontWeight: "bold", fontSize: "large" }}>Income</label>
+                <div style={{ margin: "10px" }}>
+                    <input type="radio" value="income" checked={this.state.transactionType === "income"} style={{ margin: "5px" }} onChange={this.handleTransactionType} />
+                    <label style={{ marginRight: "25px", fontWeight: "bold", fontSize: "large" }}>Income</label>
 
-                    <input type="radio" id="expense" value="expense" style={{ margin: "5px" }} onChange={this.handleTransactionType} />
-                    <label for="expense" style={{ fontWeight: "bold", fontSize: "large" }}>Expense</label>
+                    <input type="radio" value="expense" checked={this.state.transactionType === "expense"} style={{ margin: "5px" }} onChange={this.handleTransactionType} />
+                    <label style={{ fontWeight: "bold", fontSize: "large" }}>Expense</label>
+                    {/* <RadioGroup onChange={this.handleTransactionType} horizontal>
+                        <RadioButton value="income" style={{width:"50px"}}>
+                            Income
+                        </RadioButton>
+                        <RadioButton value="expense" style={{width:"50px"}}>
+                            Expense
+                        </RadioButton>
+                    </RadioGroup> */}
                 </div>
                 <div style={{ margin: "10px" }}>
                     <label style={{ fontWeight: "bold", fontSize: "large" }}>Description</label>
@@ -145,7 +153,7 @@ class AddTransaction extends React.Component {
                 </div>
 
                 <button onClick={this.handleAddTransaction} className="AddTranscButton" style={{ marginLeft: "50px" }}> Add Transaction</button>
-                {/* {redirect} */}
+                {redirect}
             </div>
         )
     }

@@ -1,5 +1,5 @@
 import React ,{Component} from "react";
-import {Link ,Route ,Switch, Redirect} from "react-router-dom";
+import {Route ,Switch} from "react-router-dom";
 import Accounts from '../../components/Accounts/Accounts';
 import AddAccounts from '../../components/Accounts/AddAccount/AddAccount';
 import AddTransaction from '../../components/Transaction/AddTransaction/AddTransaction';
@@ -14,7 +14,6 @@ class Dashboard extends Component {
 
     componentWillMount(){
         let payload = jwt.decode(localStorageGetItem("token"));
-    //    console.log(payload , payload.userName);
         this.username=payload.userName;
     }
 
@@ -27,12 +26,12 @@ class Dashboard extends Component {
     render(){
         return(
             <div> 
-                 <div style={{ height: "65px", dispaly:"flex" , textAlign:"center" , paddingTop:"25px",borderBottom:"2px solid",borderBottomColor:"#616161"}}>
-                     <div style={{ textAlign: "left",marginLeft: "30px",}}> 
-                    <label style={{fontSize: "20px" }}>EXPENSE TRACKER</label>
+                 <div style={{ display:'flex' , height: "65px", textAlign:"center" , paddingTop:"20px",borderBottom:"2px solid",borderBottomColor:"#616161" ,  justifyContent:"space-between"}}>
+                     <div style={{ textAlign: "left",marginLeft: "30px", width:"200px"}}> 
+                        <label style={{fontSize: "20px" }}>EXPENSE TRACKER</label>
                     </div>
-                    <div style={{ position: "fixed", top: "25px" , height:"25px"  ,right:"20px" , display:"flex"}}>
-                        <div style={{marginRight:"20px"}}><label style={{fontSize:"15px"}}>Hi {this.username}</label></div>
+                    <div style={{ textAlign:"right", height:"35px" ,width:"200px" ,right:"20px" , display:"flex"}}>
+                        <div style={{marginRight:"20px",padding:"5px"}}><label style={{fontSize:"20px"}}>Hi {this.username}</label></div>
                         <button onClick={this.handleLogout}>Logout</button>
                     </div>
                 </div>
@@ -43,7 +42,6 @@ class Dashboard extends Component {
                         <Route path={`${this.props.match.path}/editTransaction`}><AddTransaction /> </Route>
                         <Route path={`${this.props.match.path}/transactions`}><SpecificAccount /> </Route>
                         <Route path={`${this.props.match.path}`} exact><Accounts /></Route>
-                        {/* <Route path="*"> <Redirect to={`${this.props.match.path}`} exact/></Route> */}
                     </Switch>
                 </div>
             </div>
@@ -66,7 +64,5 @@ const mapDispatchToProps = (dispatch)  => {
             }),
         }
     }
-
-
 
 export default connect(mapStateToProps , mapDispatchToProps)(Dashboard);

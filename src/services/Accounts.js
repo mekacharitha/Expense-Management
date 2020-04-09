@@ -8,6 +8,7 @@ export const addAccount = (accountName , accountBalance) => {
     let accountIndex = accounts.findIndex(item => {
         return ( item.accountName === accountName && item.userId === payload.userId)
     })
+    console.log(accountIndex , accounts , payload.userId);
     if (accountIndex === -1) {
        // console.log(payload.userId)
         let accountId=localStorageGetItem('accountId')

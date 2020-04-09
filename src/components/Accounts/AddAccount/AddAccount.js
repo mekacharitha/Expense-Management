@@ -10,10 +10,13 @@ class Accounts extends React.Component {
         accountBalance: 0,
 
     }
-    handleAddAccount = () => {
+    handleAddAccount = async () => {
         addAccount(this.state.accountName , this.state.accountBalance)
-        this.setState({
+        await this.setState({
             accountAdded: true,
+        })
+        await this.setState({
+            accountAdded: false,
         })
 
     }
@@ -26,8 +29,13 @@ class Accounts extends React.Component {
     }
 
     render() {
+        let redirect = "";
+        if(this.state.accountAdded){
+            redirect=<Redirect to="/accounts" />
+        }
+                
         return (
-            <div style={{marginTop:"20%", textAlign:"left" , marginLeft:"100px"}}>
+            <div style={{marginTop:"18%", textAlign:"left" , marginLeft:"100px"}}>
                 <div  >
                     <label style={{ fontSize: "22px", fontWeight: "bold" }} >NEW ACCOUNT</label>
                     <br />
@@ -45,7 +53,7 @@ class Accounts extends React.Component {
                 <div style={{margin:"15px", marginLeft:"60px"}}>
                     <button onClick={this.handleAddAccount} className="AddAccButton">Add Account</button>
                 </div>
-
+                {redirect}
                 {/* {this.state.accountAdded ? <Redirect to="/accounts" /> : <Redirect to="/addAccounts" />} */}
             </div>
         )

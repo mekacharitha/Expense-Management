@@ -121,12 +121,13 @@ export const getTransactionById = () => {
 
 export const editTransaction = (transaction) => {
     let payload = jwt.decode(localStorageGetItem("token"));
-    let transactionId = Number(window.location.pathname.substr(17))
+    let transactionId = Number(window.location.pathname.substr(26))
     let transactions = localStorageGetItem('transactions');
     let transactionIndex = transactions.findIndex(item => {
         return item.transactionId === transactionId
     })
-    transaction = { ...transaction, transactionId: Number(window.location.pathname.substr(17)), accountId: transactions[transactionIndex].accountId, userId: payload.userId }
+    console.log(window.location.pathname.substr(26));
+    transaction = { ...transaction, transactionId: Number(window.location.pathname.substr(26)), accountId: transactions[transactionIndex].accountId, userId: payload.userId }
     let accounts = localStorageGetItem('accounts');
     let accountIndex = accounts.findIndex(item => {
         return item.accountId === transactions[transactionIndex].accountId
