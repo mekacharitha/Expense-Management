@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { localStorageSetItem, localStorageGetItem } from './utils';
 
 export const addTransaction = (transaction) => {
-   // console.log(transaction);
+    // console.log(transaction);
     let transactions = localStorageGetItem('transactions');
     let accounts = localStorageGetItem('accounts');
     let payload = jwt.decode(localStorageGetItem("token"));
@@ -45,17 +45,17 @@ export const addTransaction = (transaction) => {
 
 
 export const getTransactions = () => {
-    
+
     let payload = jwt.decode(localStorageGetItem("token"));
     let transactions = localStorageGetItem("transactions");
     let userTransactions = transactions.filter(obj => {
-        return (obj.userId === payload.userId) 
+        return (obj.userId === payload.userId)
     })
     return userTransactions;
 }
 
 export const getTransactionsByAccountName = () => {
-    let transactionByAccountName = [] ;
+    let transactionByAccountName = [];
     let transactions = localStorageGetItem("transactions");
     let payload = jwt.decode(localStorageGetItem("token"));
     let accounts = localStorageGetItem("accounts");
@@ -63,7 +63,7 @@ export const getTransactionsByAccountName = () => {
     let accountIndex = accounts.findIndex(item => {
         return (item.accountName === window.location.pathname.substr(23) && item.userId == payload.userId)
     })
-   // console.log(accountIndex);
+    // console.log(accountIndex);
     if (accountIndex != -1) {
         transactionByAccountName = transactions.filter(obj => {
             return obj.accountId == accounts[accountIndex].accountId
@@ -77,12 +77,12 @@ export const getAccountBalance = (accountName) => {
     let payload = jwt.decode(localStorageGetItem("token"));
     let accounts = localStorageGetItem("accounts");
     let accBalance = accounts.map(obj => {
-        if(obj.accountName == accountName && obj.userId ===payload.userId)
+        if (obj.accountName == accountName && obj.userId === payload.userId)
             return obj.accountBalance;
     })
-   // console.log(accBalance);
+    // console.log(accBalance);
     return accBalance;
-    
+
 }
 
 export const deleteTransaction = (transactionId) => {
@@ -108,14 +108,15 @@ export const deleteTransaction = (transactionId) => {
     }
 }
 
-export const getTransactionById = (transacId)=>{
-    let transactions = localStorageGetItem('transactions');
-    let transaction = transactions.filter(obj => {
-        return (obj.transactionId == transacId)
+export const getTransactionById = () => {
+    let transactions = JSON.parse(localStorage.getItem("transactions"));
+    let transactionId = Number(window.location.pathname.substr(26))
+    console.log(transactionId);
+    let transactionByTransactionId = transactions.filter(obj => {
+        return obj.transactionId == transactionId
     })
-    //console.log(transaction);
-    return transaction;
-    
+    console.log(transactionByTransactionId)
+    return transactionByTransactionId;
 }
 
 export const editTransaction = (transaction) => {
@@ -142,7 +143,7 @@ export const editTransaction = (transaction) => {
         accounts[accountIndex].accountBalance = Number(accounts[accountIndex].accountBalance) - Number(transaction.amount)
     else
         accounts[accountIndex].accountBalance = Number(accounts[accountIndex].accountBalance) + Number(transaction.amount)
-   localStorageSetItem("accounts", accounts)
+    localStorageSetItem("accounts", accounts)
     transactions.splice(transactionIndex, 1)
     transactions.splice(transactionIndex, 0, transaction)
     localStorageSetItem("transactions", transactions)

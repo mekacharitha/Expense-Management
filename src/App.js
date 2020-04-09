@@ -54,7 +54,6 @@ class App extends Component {
            
             :
             <Switch>
-              
               <Route path="/accounts" component={Dashboard} />
               <Route path="*" render={() => <Redirect to="/accounts" />} exact/>
             </Switch>
