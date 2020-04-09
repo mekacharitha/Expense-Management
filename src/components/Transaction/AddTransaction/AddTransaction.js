@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { addTransaction, editTransaction, getTransactionById } from '../../../services/transactions';
+import {getAccountNameById} from '../../../services/Accounts';
 import { getAccounts } from '../../../services/Accounts';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -11,12 +12,12 @@ import moment from "moment";
 class AddTransaction extends React.Component {
     state = {
         transactionType: '',
-        description: window.location.pathname.substr(0, 25) != '/accounts/addtransaction/' && window.location.pathname != '/accounts/addtransaction' ? getTransactionById()[0].description : '',
-        amount: window.location.pathname.substr(0, 25) != '/accounts/addtransaction/' && window.location.pathname != '/accounts/addtransaction' ? getTransactionById()[0].amount : 0,
-        date: window.location.pathname.substr(0, 25) != '/accounts/addtransaction/' && window.location.pathname != '/accounts/addtransaction' ? getTransactionById()[0].date : "",
+        description: window.location.pathname.substr(0, 25) != '/accounts/addTransaction/' && window.location.pathname != '/accounts/addTransaction' ? getTransactionById()[0].description : '',
+        amount: window.location.pathname.substr(0, 25) != '/accounts/addTransaction/' && window.location.pathname != '/accounts/addTransaction' ? getTransactionById()[0].amount : 0,
+        date: '',
         addedTransaction: false,
         editedTransaction: false,
-        accountName: window.location.pathname.substr(0, 25) != '/accounts/addtransaction/' && window.location.pathname != '/accounts/addtransaction' ? getTransactionById()[0].accountName : '',
+        accountName: window.location.pathname.substr(0, 25) != '/accounts/addTransaction/' && window.location.pathname != '/accounts/addTransaction' ?getAccountNameById(getTransactionById()[0].accountId)  : 'Select an Account',
         arr: {}
     }
 
@@ -26,7 +27,7 @@ class AddTransaction extends React.Component {
             localStorage.setItem("transactionId", 0)
         }
         let array = []
-        if (window.location.pathname.substr(0, 25) != '/accounts/addtransaction/' && window.location.pathname != '/accounts/addtransaction') {
+        if (window.location.pathname.substr(0, 25) != '/accounts/addTransaction/' && window.location.pathname != '/accounts/addTransaction') {
             array = getTransactionById();
             // this.setState({amount:array[0].amount})
         }
@@ -39,12 +40,13 @@ class AddTransaction extends React.Component {
             date: moment(this.state.date).format('DD-MM-YYYY'),
             accountName: this.state.accountName
         }
-        if(transaction.accountName === ""){
+      //  console.log(transaction.accountName);
+        if (transaction.accountName !== window.location.pathname.substr(25) || transaction.accountName === undefined) {
             transaction.accountName = window.location.pathname.substr(25);
-            //console.log(transaction.accountName);
+           // console.log(transaction.accountName);
         }
         console.log(window.location.pathname.substr(0, 25))
-        if (window.location.pathname.substr(0, 25) == '/accounts/addtransaction/' || window.location.pathname == '/accounts/addtransaction') {
+        if (window.location.pathname.substr(0, 25) == '/accounts/addTransaction/' || window.location.pathname == '/accounts/addTransaction') {
             let onAddTransaction = addTransaction(transaction)
             if (onAddTransaction)
                 await this.setState({ addedTransaction: true })
@@ -82,6 +84,7 @@ class AddTransaction extends React.Component {
         let accountName = userAccounts.map(obj => {
             return (<option label={obj.accountName}>{obj.accountName}</option>);
         })
+
         let path = window.location.pathname;
         if (path.startsWith("/accounts/add")) {
             var accName = window.location.pathname.substr(25);
@@ -104,23 +107,23 @@ class AddTransaction extends React.Component {
                 </div>
 
                 {accName ?
-                            <div style={{ margin: "10px" }}>
-                                <label style={{ fontWeight: "bold", fontSize: "large" }}>Account</label>
-                                <br />
-                                <select value={accName} onChange={this.handleAccountName} className="InputField" disabled>
-                                    <option label={accName} ></option>
-                                </select>
-                            </div>
-                            :
-                            <div style={{ margin: "10px" }}>
-                                <label style={{ fontWeight: "bold", fontSize: "large" }}>Account</label>
-                                <br />
-                                <select value={this.state.accountName} onChange={this.handleAccountName} className="InputField">
-                                    <option label="Select an Account "></option>
-                                    {accountName}
-                                </select>
-                            </div>
-                        }
+                    <div style={{ margin: "10px" }}>
+                        <label style={{ fontWeight: "bold", fontSize: "large" }}>Account</label>
+                        <br />
+                        <select value={accName} onChange={this.handleAccountName} className="InputField" disabled>
+                            <option label={accName} ></option>
+                        </select>
+                    </div>
+                    :
+                    <div style={{ margin: "10px" }}>
+                        <label style={{ fontWeight: "bold", fontSize: "large" }}>Account</label>
+                        <br />
+                        <select value={this.state.accountName} onChange={this.handleAccountName} className="InputField">
+                            <option label="Select an Account"></option>
+                            {accountName}
+                        </select>
+                    </div>
+                }
 
                 <div style={{ margin: "10px" }}>
                     <label style={{ fontWeight: "bold", fontSize: "large" }}>Amount</label>

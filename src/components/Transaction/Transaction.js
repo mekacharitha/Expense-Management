@@ -26,7 +26,8 @@ class Transaction extends React.Component {
                     return <div style={{ height: "50px", width: "75vw", justifyContent: "space-around", display: "flex", border: "1px solid",fontSize:"20px", margin: "10px", padding: "20px" }}>
                         <div className="TransactionItem"> {item.transactionType} </div>
                         <div className="TransactionItem"> {item.description} </div>
-                        <div className="TransactionItem"> {moment(item.date).format('DD-MM-YYYY')}</div>
+                        {/* <div className="TransactionItem"> {moment(item.date).format('DD-MM-YYYY')}</div> */}
+                        <div className="TransactionItem"> {item.date}</div>
                         <div className="TransactionItem"> {item.amount} </div>
                         <div className="TransactionItem">{getAccountNameById(item.accountId)}</div>
                         <MdDelete onClick={() => this.handleDelete(item.transactionId)} />
