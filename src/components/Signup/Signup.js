@@ -1,15 +1,14 @@
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createUser } from '../../services/users';
 import { localStorageSetItem, localStorageGetItem } from '../../services/utils';
 import './Signup.css';
-import { Link , Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 class Signup extends Component {
 
     state = {
-        onSignup : false,
+        onSignup: false,
     }
 
     componentWillMount() {
@@ -39,7 +38,7 @@ class Signup extends Component {
             createUser(user);
             alert("Signup successful");
             this.setState({
-                onSignup : true
+                onSignup: true
             })
         }
         catch (e) {
@@ -50,7 +49,7 @@ class Signup extends Component {
     render() {
         return (
             <div>
-                <div style={{marginTop:"18%"}}>
+                <div style={{ marginTop: "18%" }}>
                     <h2>EXPENSE TRACKER</h2>
                     <div className="InputDivision">
                         <input type="text" placeholder="USERNAME" className="Input" onChange={this.onUserNameChange} />
@@ -67,7 +66,7 @@ class Signup extends Component {
                 </div>
                 {this.state.onSignup ? <Redirect to="/signin" /> : <Redirect to="/signup" />}
             </div>
-            
+
         );
     }
 }

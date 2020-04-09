@@ -4,7 +4,6 @@ import { Link, Redirect } from 'react-router-dom';
 import { localStorageSetItem, localStorageGetItem } from '../../services/utils';
 import { getAccounts } from '../../services/Accounts';
 import Transactions from '../Transaction/Transaction';
-//import {getTransactions} from '../../services/transactions';
 import { AiOutlinePlus } from "react-icons/ai";
 
 class Accounts extends Component {
@@ -36,12 +35,9 @@ class Accounts extends Component {
 
     render() {
         let usersAccountDetails = getAccounts();
-        //let transactions=getTransactions();
         let backgroundIndex = 0;
         return (
             <div>
-               
-
                 <div style={{ margin: "25px" }}>
                     <div style={{ textAlign: "left", marginLeft: "25px" }}>
                         <label style={{ fontWeight: "bold", fontSize: "larger" }} >ACCOUNTS</label>

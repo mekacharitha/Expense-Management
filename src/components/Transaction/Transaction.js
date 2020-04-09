@@ -5,7 +5,6 @@ import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import { getTransactions } from '../../services/transactions';
 import { getAccountNameById } from '../../services/Accounts';
-import moment from "moment";
 import './Transaction.css';
 
 
@@ -22,11 +21,10 @@ class Transaction extends React.Component {
         return (
             <div style={{ marginLeft: "50px" }} >
                 {transactions.map(item => {
-                   
-                    return <div style={{ height: "50px", width: "75vw", justifyContent: "space-around", display: "flex", border: "1px solid",fontSize:"20px", margin: "10px", padding: "20px" }}>
+
+                    return <div style={{ height: "50px", width: "75vw", justifyContent: "space-around", display: "flex", border: "1px solid", fontSize: "20px", margin: "10px", padding: "20px" }}>
                         <div className="TransactionItem"> {item.transactionType} </div>
                         <div className="TransactionItem"> {item.description} </div>
-                        {/* <div className="TransactionItem"> {moment(item.date).format('DD-MM-YYYY')}</div> */}
                         <div className="TransactionItem"> {item.date}</div>
                         <div className="TransactionItem"> {item.amount} </div>
                         <div className="TransactionItem">{getAccountNameById(item.accountId)}</div>
@@ -36,7 +34,6 @@ class Transaction extends React.Component {
                 })}
 
             </div>
-
         )
     }
 }

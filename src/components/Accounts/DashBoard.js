@@ -1,20 +1,20 @@
-import React ,{Component} from "react";
-import {Route ,Switch} from "react-router-dom";
+import React, { Component } from "react";
+import { Route, Switch } from "react-router-dom";
 import Accounts from '../../components/Accounts/Accounts';
 import AddAccounts from '../../components/Accounts/AddAccount/AddAccount';
 import AddTransaction from '../../components/Transaction/AddTransaction/AddTransaction';
 import SpecificAccount from '../../components/Accounts/SpecificAccount/SpecificAcccount';
-import {localStorageGetItem} from '../../services/utils';
-import {connect} from 'react-redux';
+import { localStorageGetItem } from '../../services/utils';
+import { connect } from 'react-redux';
 import jwt from "jsonwebtoken";
 
 class Dashboard extends Component {
 
-    username ;
+    username;
 
-    componentWillMount(){
+    componentWillMount() {
         let payload = jwt.decode(localStorageGetItem("token"));
-        this.username=payload.userName;
+        this.username = payload.userName;
     }
 
     handleLogout = () => {
@@ -23,15 +23,15 @@ class Dashboard extends Component {
         this.setState({})
     }
 
-    render(){
-        return(
-            <div> 
-                 <div style={{ display:'flex' , height: "65px", textAlign:"center" , paddingTop:"20px",borderBottom:"2px solid",borderBottomColor:"#616161" ,  justifyContent:"space-between"}}>
-                     <div style={{ textAlign: "left",marginLeft: "30px", width:"200px"}}> 
-                        <label style={{fontSize: "20px" }}>EXPENSE TRACKER</label>
+    render() {
+        return (
+            <div>
+                <div style={{ display: 'flex', height: "65px", textAlign: "center", paddingTop: "20px", borderBottom: "2px solid", borderBottomColor: "#616161", justifyContent: "space-between" }}>
+                    <div style={{ textAlign: "left", marginLeft: "30px", width: "200px" }}>
+                        <label style={{ fontSize: "20px" }}>EXPENSE TRACKER</label>
                     </div>
-                    <div style={{ textAlign:"right", height:"35px" ,width:"200px" ,right:"20px" , display:"flex"}}>
-                        <div style={{marginRight:"20px",padding:"5px"}}><label style={{fontSize:"20px"}}>Hi {this.username}</label></div>
+                    <div style={{ textAlign: "right", height: "35px", width: "200px", right: "20px", display: "flex" }}>
+                        <div style={{ marginRight: "20px", padding: "5px" }}><label style={{ fontSize: "20px" }}>Hi {this.username}</label></div>
                         <button onClick={this.handleLogout}>Logout</button>
                     </div>
                 </div>
@@ -51,18 +51,18 @@ class Dashboard extends Component {
 
 const mapStateToProps = (state) => {
     return {
-      token: state.Users.token,
+        token: state.Users.token,
     }
-  }
+}
 
-const mapDispatchToProps = (dispatch)  => {
+const mapDispatchToProps = (dispatch) => {
     return {
         removeToken: (value) =>
             dispatch({
                 type: "REMOVE_TOKEN",
                 payload: value
             }),
-        }
     }
+}
 
-export default connect(mapStateToProps , mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

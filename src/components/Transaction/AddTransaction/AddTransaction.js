@@ -1,12 +1,11 @@
 import React from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { addTransaction, editTransaction, getTransactionById } from '../../../services/transactions';
 import { getAccountNameById } from '../../../services/Accounts';
 import { getAccounts } from '../../../services/Accounts';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
-import { RadioGroup, RadioButton } from 'react-radio-buttons';
 import './AddTransaction.css';
 import moment from "moment";
 
@@ -40,11 +39,10 @@ class AddTransaction extends React.Component {
             accountName: this.state.accountName
         }
         console.log(transaction);
-        if ((transaction.accountName !== window.location.pathname.substr(25) && transaction.accountName === "Select an Account")|| transaction.accountName === undefined ) {
+        if ((transaction.accountName !== window.location.pathname.substr(25) && transaction.accountName === "Select an Account") || transaction.accountName === undefined) {
             transaction.accountName = window.location.pathname.substr(25);
             console.log(transaction);
         }
-        // console.log(window.location.pathname.substr(0, 25))
         if (window.location.pathname.substr(0, 25) == '/accounts/addTransaction/' || window.location.pathname == '/accounts/addTransaction') {
             let onAddTransaction = addTransaction(transaction)
             if (onAddTransaction)
@@ -53,7 +51,7 @@ class AddTransaction extends React.Component {
         }
         else {
 
-            let onEditTransaction = editTransaction(transaction)
+             editTransaction(transaction)
             await this.setState({ editedTransaction: true })
             await this.setState({ editedTransaction: false })
         }
@@ -62,7 +60,7 @@ class AddTransaction extends React.Component {
         this.setState({ transactionType: e.currentTarget.value })
     }
     handleAccountName = (e) => {
-        //console.log(e.target.value);
+
         this.setState({ accountName: e.target.value })
     }
     handleDescription = (e) => {
@@ -77,7 +75,6 @@ class AddTransaction extends React.Component {
 
     render() {
         let redirect = ''
-        let array = []
         if (this.state.addedTransaction || this.state.editedTransaction)
             redirect = <Redirect to='/accounts'></Redirect>
         let userAccounts = getAccounts();
@@ -99,14 +96,6 @@ class AddTransaction extends React.Component {
 
                     <input type="radio" value="expense" checked={this.state.transactionType === "expense"} style={{ margin: "5px" }} onChange={this.handleTransactionType} />
                     <label style={{ fontWeight: "bold", fontSize: "large" }}>Expense</label>
-                    {/* <RadioGroup onChange={this.handleTransactionType} horizontal>
-                        <RadioButton value="income" style={{width:"50px"}}>
-                            Income
-                        </RadioButton>
-                        <RadioButton value="expense" style={{width:"50px"}}>
-                            Expense
-                        </RadioButton>
-                    </RadioGroup> */}
                 </div>
                 <div style={{ margin: "10px" }}>
                     <label style={{ fontWeight: "bold", fontSize: "large" }}>Description</label>

@@ -8,11 +8,8 @@ export const addAccount = (accountName , accountBalance) => {
     let accountIndex = accounts.findIndex(item => {
         return ( item.accountName === accountName && item.userId === payload.userId)
     })
-    console.log(accountIndex , accounts , payload.userId);
     if (accountIndex === -1) {
-       // console.log(payload.userId)
         let accountId=localStorageGetItem('accountId')
-        //console.log(accountBalance);
         let obj={
                accountId:++accountId,
                accountName:accountName,
@@ -43,6 +40,5 @@ export const getAccountNameById = (accId) => {
     let accName = accounts.filter(obj => {
         return obj.accountId == accId && obj.userId == payload.userId
     })
-    //console.log(accName[0].accountName);
     return accName[0].accountName;
 }

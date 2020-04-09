@@ -11,7 +11,7 @@ class Accounts extends React.Component {
 
     }
     handleAddAccount = async () => {
-        addAccount(this.state.accountName , this.state.accountBalance)
+        addAccount(this.state.accountName, this.state.accountBalance)
         await this.setState({
             accountAdded: true,
         })
@@ -30,31 +30,30 @@ class Accounts extends React.Component {
 
     render() {
         let redirect = "";
-        if(this.state.accountAdded){
-            redirect=<Redirect to="/accounts" />
+        if (this.state.accountAdded) {
+            redirect = <Redirect to="/accounts" />
         }
-                
+
         return (
-            <div style={{marginTop:"18%", textAlign:"left" , marginLeft:"100px"}}>
+            <div style={{ marginTop: "18%", textAlign: "left", marginLeft: "100px" }}>
                 <div  >
                     <label style={{ fontSize: "22px", fontWeight: "bold" }} >NEW ACCOUNT</label>
                     <br />
                 </div>
-                <div style={{margin:"15px"}}>
+                <div style={{ margin: "15px" }}>
                     <label>Account Name</label>
                     <br />
                     <input type="text" onChange={this.handleAccountName} className="InputField"></input>
                 </div>
-                <div style={{margin:"15px"}}>
+                <div style={{ margin: "15px" }}>
                     <label>Starting Balance</label>
                     <br />
                     <input type="text" onChange={this.handleAccountBalance} className="InputField"></input>
                 </div>
-                <div style={{margin:"15px", marginLeft:"60px"}}>
+                <div style={{ margin: "15px", marginLeft: "60px" }}>
                     <button onClick={this.handleAddAccount} className="AddAccButton">Add Account</button>
                 </div>
                 {redirect}
-                {/* {this.state.accountAdded ? <Redirect to="/accounts" /> : <Redirect to="/addAccounts" />} */}
             </div>
         )
     }
