@@ -20,7 +20,6 @@ class Dashboard extends Component {
     handleLogout = () => {
         this.props.removeToken("");
         localStorage.removeItem("token")
-        this.setState({})
     }
 
     render() {

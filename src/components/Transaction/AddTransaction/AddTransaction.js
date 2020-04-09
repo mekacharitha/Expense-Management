@@ -38,10 +38,10 @@ class AddTransaction extends React.Component {
             date: moment(this.state.date).format('DD-MM-YYYY'),
             accountName: this.state.accountName
         }
-        console.log(transaction);
+       
         if ((transaction.accountName !== window.location.pathname.substr(25) && transaction.accountName === "Select an Account") || transaction.accountName === undefined) {
             transaction.accountName = window.location.pathname.substr(25);
-            console.log(transaction);
+            
         }
         if (window.location.pathname.substr(0, 25) == '/accounts/addTransaction/' || window.location.pathname == '/accounts/addTransaction') {
             let onAddTransaction = addTransaction(transaction)
@@ -85,7 +85,7 @@ class AddTransaction extends React.Component {
         let path = window.location.pathname;
         if (path.startsWith("/accounts/add")) {
             var accName = window.location.pathname.substr(25);
-            //  console.log(accName);
+           
         }
         return (
             <div style={{ textAlign: "left", marginLeft: "50px" }}>
@@ -131,7 +131,6 @@ class AddTransaction extends React.Component {
                 <div style={{ margin: "10px" }}>
                     <label style={{ fontWeight: "bold", fontSize: "large" }}>Date</label>
                     <br />
-                    {/* <input type="text" onChange={this.handleDate} className="InputField"></input> */}
                     <DatePicker
                         dateFormat='dd-MM-yyyy'
                         selected={this.state.date}

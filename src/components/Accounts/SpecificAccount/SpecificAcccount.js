@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import { IoMdArrowRoundBack } from "react-icons/io";
@@ -17,7 +17,6 @@ class Transaction extends React.Component {
         let transactions = getTransactionsByAccountName();
         let accName = window.location.pathname.substr(23);
         let accBalance = getAccountBalance(accName);
-        console.log(transactions);
         return (
             <div style={{ marginLeft: "50px", }} >
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -40,7 +39,7 @@ class Transaction extends React.Component {
                         <div> {item.transactionType} </div>
                         <div> {item.description} </div>
                         <div> {item.date} </div>
-                        <div> {item.amount} </div>
+                        <div> ₹ {item.amount} </div>
                         <div> {item.accountId} </div>
                         <MdDelete onClick={() => this.handleDelete(item.transactionId)} />
                         <Link to={`/accounts/editTransaction/${item.transactionId}`}><FiEdit style={{ color: "black" }} /></Link>
